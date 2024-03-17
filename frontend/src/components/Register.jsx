@@ -13,13 +13,14 @@ const Register = () => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [role, setRole] = useState("teamMember")
   const [loading, setLoading] = useState(false)
 
   const registerHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {
-        const {data} = await axios.post(`${server}/register`, {email, password}, {withCredentials : true, headers : {"Content-Type" : "application/json"}})
+        const {data} = await axios.post(`${server}/register`, {email, password, userType : role}, {withCredentials : true, headers : {"Content-Type" : "application/json"}})
 
         toast.success(data.message)
         setIsAuthenticated(true)
@@ -45,6 +46,12 @@ const Register = () => {
                 <input required type="email" name="email" onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
                 <br />
                 <input required autoComplete="current-password" type="password" name="password" onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+                <br />
+                <br />
+                <div onChange={(e) => setRole(e.target.value)}> 
+                  <input type="radio" value="admin" name="role" /> Admin
+                  <input style={{marginLeft: "1rem"}} type="radio" value="teamMember" name="role" defaultChecked /> Team Member
+                </div>
                 <br />
                 <br />
                 <span><input required type="checkbox" name="checkbox" style={{marginRight : '10px', color : '#525252'}} />By creating an account, I agree to our terms of use and privacy policy</span>
